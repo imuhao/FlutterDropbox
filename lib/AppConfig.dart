@@ -6,7 +6,7 @@ class AppConfig {
   static bool is_login = false;
   static String client_id = "jw5h1ygudbirtrt";
 
-  static String base_url = "https://www.dropbox.com";
+  static String base_url = "dropbox.com";
   static String base_api_url = "api.dropboxapi.com";
 
   //获取token
@@ -16,6 +16,8 @@ class AppConfig {
   //获取用户帐号信息
   static String get_account_url = "https://$base_api_url$get_account_path";
   static String get_account_path = "/2/users/get_account";
-
   static String token_key = "user_token";
+
+  //list文件
+  static String get_list_path = "/2/file_requests/list";
 }

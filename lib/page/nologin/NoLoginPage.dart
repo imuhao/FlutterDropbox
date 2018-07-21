@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:core';
+import 'package:http/http.dart' as http;
 
 class NoLoginPage extends StatefulWidget {
   @override
@@ -93,7 +94,7 @@ class NoLoginPageView extends State<NoLoginPage> {
       return;
     }
     refreshState(true);
-    String userInfo = await getUserInfo();
+    String userInfo = await getList();
     print(userInfo);
     refreshState(false);
     Scaffold.of(context).showSnackBar(SnackBar(
@@ -113,9 +114,31 @@ class NoLoginPageView extends State<NoLoginPage> {
       var uri = Uri.http(AppConfig.base_api_url, AppConfig.get_account_path,
           {"account_id": "dbid:AAAZRnC_7P0lVZqp7brdcQHzsajqzBOcGro"});
       var request = await httpClient.postUrl(uri);
+
       request.headers.set("Authorization",
           "Bearer _nolaLiD2BAAAAAAAAABBMyxahyxE8VzJI3CZkf8MNC2xwt6ZHA_eibO5M_FWOoA");
-      request.headers.add("content-Type", "application/json");
+      request.headers.add("Content-Type", "application/json");
+      var response = await request.close();
+      result = await response.transform(new Utf8Decoder().cast()).join();
+      httpClient.close();
+    } catch (e) {
+      result = e.toString();
+
+      print(e.toString());
+    }
+    return result;
+  }
+
+  Future<String> getList() async {
+    var result = "";
+    //获取用户信息
+    try {
+      var httpClient = HttpClient();
+      var uri = Uri.http(AppConfig.base_api_url, AppConfig.get_list_path);
+      print(uri.toString());
+      var request = await httpClient.postUrl(uri);
+      request.headers.set("Authorization",
+          "Bearer _nolaLiD2BAAAAAAAAABBMyxahyxE8VzJI3CZkf8MNC2xwt6ZHA_eibO5M_FWOoA");
       var response = await request.close();
       result = await response.transform(new Utf8Decoder().cast()).join();
       httpClient.close();
@@ -125,16 +148,6 @@ class NoLoginPageView extends State<NoLoginPage> {
     return result;
   }
 
-  /*var url = AppConfig.get_account_url;
-      http.Response response = await http.post(url, headers: {
-        "Authorization":
-            "Bearer _nolaLiD2BAAAAAAAAABBMyxahyxE8VzJI3CZkf8MNC2xwt6ZHA_eibO5M_FWOoA",
-        "Content-Type": "application/json"
-      }, body: {
-        "account_id": "dbid:AAAZRnC_7P0lVZqp7brdcQHzsajqzBOcGro"
-      });
-      result = response.body;
-      print(response.statusCode);*/
   void refreshState(over) {
     setState(() {
       isLoading = over;

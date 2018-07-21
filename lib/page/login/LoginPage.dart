@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    print("llll");
     return LoginPageView();
   }
 }
